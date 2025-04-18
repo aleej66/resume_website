@@ -1,0 +1,142 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}{% if is_add %}Add Experience{% else %}Edit Experience{% endif %}{% endblock %}
+
+{% block header %}{% if is_add %}Add Experience{% else %}Edit Experience{% endif %}{% endblock %}
+
+{% block content %}
+<div class="edit-experience">
+    <form method="POST" class="admin-form">
+        {{ form.csrf_token }}
+        {{ form.id }}
+        
+        <div class="form-group">
+            {{ form.position.label }}
+            {{ form.position(class="form-control") }}
+            {% if form.position.errors %}
+                <div class="form-errors">
+                    {% for error in form.position.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            {{ form.company.label }}
+            {{ form.company(class="form-control") }}
+            {% if form.company.errors %}
+                <div class="form-errors">
+                    {% for error in form.company.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            {{ form.location.label }}
+            {{ form.location(class="form-control") }}
+            {% if form.location.errors %}
+                <div class="form-errors">
+                    {% for error in form.location.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            {{ form.period.label }}
+            {{ form.period(class="form-control") }}
+            {% if form.period.errors %}
+                <div class="form-errors">
+                    {% for error in form.period.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            {{ form.description.label }}
+            {{ form.description(class="form-control") }}
+            {% if form.description.errors %}
+                <div class="form-errors">
+                    {% for error in form.description.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        
+        <h3>Achievements</h3>
+        <div id="achievements-container" data-prototype="
+            <div class='nested-form'>
+                <div class='form-group'>
+                    <label for='achievements-__name__-text'>Achievement</label>
+                    <textarea id='achievements-__name__-text' name='achievements-__name__-text' class='form-control' required></textarea>
+                </div>
+                <button type='button' class='btn btn-danger remove-item-btn'>Remove Achievement</button>
+            </div>
+        ">
+            {% for achievement_form in form.achievements %}
+            <div class="nested-form">
+                {{ achievement_form.id }}
+                <div class="form-group">
+                    {{ achievement_form.text.label }}
+                    {{ achievement_form.text(class="form-control") }}
+                    {% if achievement_form.text.errors %}
+                        <div class="form-errors">
+                            {% for error in achievement_form.text.errors %}
+                                <span class="error">{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                <button type="button" class="btn btn-danger remove-item-btn">Remove Achievement</button>
+            </div>
+            {% endfor %}
+        </div>
+        <button type="button" class="btn btn-secondary add-item-btn">Add Achievement</button>
+        
+        <div class="form-actions">
+            {{ form.submit(class="btn btn-primary") }}
+            <a href="{{ url_for('list_experience') }}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<style>
+    .edit-experience {
+        max-width: 800px;
+    }
+    .form-errors {
+        color: #dc3545;
+        margin-top: 5px;
+        font-size: 0.9em;
+    }
+    .form-actions {
+        margin-top: 20px;
+        display: flex;
+        gap: 10px;
+    }
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+    }
+    h3 {
+        margin-top: 30px;
+        margin-bottom: 15px;
+    }
+    .nested-form {
+        background-color: #f9f9f9;
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 4px;
+    }
+    .add-item-btn {
+        margin-bottom: 30px;
+    }
+</style>
+{% endblock %}

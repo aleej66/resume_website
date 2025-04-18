@@ -1,0 +1,69 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}{% if is_add %}Add Skill{% else %}Edit Skill{% endif %}{% endblock %}
+
+{% block header %}{% if is_add %}Add Skill{% else %}Edit Skill{% endif %}{% endblock %}
+
+{% block content %}
+<div class="edit-skill">
+    <form method="POST" class="admin-form">
+        {{ form.csrf_token }}
+        {{ form.id }}
+        
+        <div class="form-group">
+            {{ form.name.label }}
+            {{ form.name(class="form-control") }}
+            {% if form.name.errors %}
+                <div class="form-errors">
+                    {% for error in form.name.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            {{ form.category.label }}
+            {{ form.category(class="form-control") }}
+            <small class="form-text text-muted">Examples: programming, frameworks, tools, languages</small>
+            {% if form.category.errors %}
+                <div class="form-errors">
+                    {% for error in form.category.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="form-actions">
+            {{ form.submit(class="btn btn-primary") }}
+            <a href="{{ url_for('list_skills') }}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<style>
+    .edit-skill {
+        max-width: 600px;
+    }
+    .form-errors {
+        color: #dc3545;
+        margin-top: 5px;
+        font-size: 0.9em;
+    }
+    .form-actions {
+        margin-top: 20px;
+        display: flex;
+        gap: 10px;
+    }
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+    }
+    .form-text {
+        display: block;
+        margin-top: 5px;
+        font-size: 0.85em;
+    }
+</style>
+{% endblock %}

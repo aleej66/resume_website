@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Resume Admin{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Admin-specific styles */
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .admin-nav {
+            display: flex;
+            gap: 15px;
+        }
+        .admin-nav a {
+            padding: 8px 15px;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+            text-decoration: none;
+            color: #333;
+            transition: background-color 0.3s;
+        }
+        .admin-nav a:hover {
+            background-color: #e0e0e0;
+        }
+        .admin-content {
+            background-color: #fff;
+            border-radius: 4px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .admin-table th, .admin-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .admin-table th {
+            background-color: #f5f5f5;
+        }
+        .admin-form {
+            max-width: 800px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        .form-control {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        textarea.form-control {
+            min-height: 100px;
+        }
+        .btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+        }
+        .flash-messages {
+            margin-bottom: 20px;
+        }
+        .flash-message {
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        .flash-success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .flash-error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .nested-form {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+        .add-item-btn {
+            margin-bottom: 15px;
+        }
+        .remove-item-btn {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <a href="{{ url_for('admin') }}">Resume Admin</a>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="{{ url_for('index') }}">View Resume</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="admin-container">
+            <div class="admin-header">
+                <h1>{% block header %}Resume Admin{% endblock %}</h1>
+                <div class="admin-nav">
+                    <a href="{{ url_for('admin') }}">Dashboard</a>
+                    <a href="{{ url_for('edit_personal') }}">Personal Info</a>
+                    <a href="{{ url_for('list_education') }}">Education</a>
+                    <a href="{{ url_for('list_experience') }}">Experience</a>
+                    <a href="{{ url_for('list_skills') }}">Skills</a>
+                    <a href="{{ url_for('list_projects') }}">Projects</a>
+                </div>
+            </div>
+
+            <div class="flash-messages">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="flash-message flash-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+
+            <div class="admin-content">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Resume Admin. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // JavaScript for dynamic form fields (adding/removing achievements, technologies, etc.)
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add achievement or technology
+            const addButtons = document.querySelectorAll('.add-item-btn');
+            addButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const container = this.previousElementSibling;
+                    const prototype = container.getAttribute('data-prototype');
+                    const index = container.querySelectorAll('.nested-form').length;
+                    const newForm = prototype.replace(/__name__/g, index);
+                    container.insertAdjacentHTML('beforeend', newForm);
+                    
+                    // Add event listener to the new remove button
+                    const newRemoveButton = container.lastElementChild.querySelector('.remove-item-btn');
+                    if (newRemoveButton) {
+                        newRemoveButton.addEventListener('click', removeItem);
+                    }
+                });
+            });
+            
+            // Remove achievement or technology
+            const removeButtons = document.querySelectorAll('.remove-item-btn');
+            removeButtons.forEach(button => {
+                button.addEventListener('click', removeItem);
+            });
+            
+            function removeItem(e) {
+                e.preventDefault();
+                this.closest('.nested-form').remove();
+            }
+        });
+    </script>
+</body>
+</html>

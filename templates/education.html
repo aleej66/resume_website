@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+
+{% block title %}Education - Resume{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <h1>Education</h1>
+    <p>My academic background and qualifications</p>
+</section>
+
+<section class="education-section">
+    {% for edu in education %}
+    <div class="education-item">
+        <div class="education-header">
+            <h2>{{ edu.degree }}</h2>
+            <div class="institution-info">
+                <h3>{{ edu.institution }}</h3>
+                <p class="location">{{ edu.location }}</p>
+                <p class="period">{{ edu.period }}</p>
+            </div>
+        </div>
+        <div class="education-content">
+            {% if edu.description %}
+            <div class="description">
+                <p>{{ edu.description }}</p>
+            </div>
+            {% endif %}
+            {% if edu.courses %}
+            <div class="courses">
+                <h4>Relevant Courses:</h4>
+                <ul>
+                    {% for course in edu.courses %}
+                    <li>{{ course }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+            {% if edu.achievements %}
+            <div class="achievements">
+                <h4>Academic Achievements:</h4>
+                <ul>
+                    {% for achievement in edu.achievements %}
+                    <li>{{ achievement }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</section>
+
+<div class="section-navigation">
+    <a href="{{ url_for('experience') }}" class="nav-button"><i class="fas fa-arrow-left"></i> Experience</a>
+    <a href="{{ url_for('skills') }}" class="nav-button">Skills <i class="fas fa-arrow-right"></i></a>
+</div>
+{% endblock %}

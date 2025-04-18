@@ -1,0 +1,20 @@
+# Default Profile Image
+
+This file serves as a placeholder for the default profile image.
+
+To create a default profile image:
+
+1. Create a simple image with your initials or a generic avatar
+2. Save it as "default-profile.jpg" in this directory
+3. Make sure it's a square image (1:1 aspect ratio)
+4. Recommended size: 300x300 pixels
+
+If no profile image is found, the website will display a placeholder or fallback to a generic avatar.
+
+You can also use online services to generate avatar images:
+- Gravatar (https://gravatar.com/)
+- UI Avatars (https://ui-avatars.com/)
+- DiceBear Avatars (https://avatars.dicebear.com/)
+
+Example of generating an avatar with UI Avatars:
+https://ui-avatars.com/api/?name=John+Doe&size=300&background=3498db&color=fff

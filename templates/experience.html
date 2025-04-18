@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+
+{% block title %}Work Experience - Resume{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <h1>Work Experience</h1>
+    <p>My professional journey and career achievements</p>
+</section>
+
+<section class="experience-section">
+    {% for job in experience %}
+    <div class="experience-item">
+        <div class="experience-header">
+            <h2>{{ job.position }}</h2>
+            <div class="company-info">
+                <h3>{{ job.company }}</h3>
+                <p class="location">{{ job.location }}</p>
+                <p class="period">{{ job.period }}</p>
+            </div>
+        </div>
+        <div class="experience-content">
+            <div class="description">
+                <p>{{ job.description }}</p>
+            </div>
+            {% if job.achievements %}
+            <div class="achievements">
+                <h4>Key Achievements:</h4>
+                <ul>
+                    {% for achievement in job.achievements %}
+                    <li>{{ achievement }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</section>
+
+<div class="section-navigation">
+    <a href="{{ url_for('index') }}" class="nav-button"><i class="fas fa-arrow-left"></i> Back to Resume</a>
+    <a href="{{ url_for('education') }}" class="nav-button">Education <i class="fas fa-arrow-right"></i></a>
+</div>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends "layout.html" %}
+
+{% block title %}Skills - Resume{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <h1>Skills</h1>
+    <p>My technical and professional competencies</p>
+</section>
+
+<section class="skills-section">
+    <div class="skills-category">
+        <h2>Programming Languages</h2>
+        <div class="skill-tags">
+            {% for skill in skills.programming %}
+            <div class="skill-tag">{{ skill }}</div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="skills-category">
+        <h2>Frameworks & Libraries</h2>
+        <div class="skill-tags">
+            {% for skill in skills.frameworks %}
+            <div class="skill-tag">{{ skill }}</div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="skills-category">
+        <h2>Tools & Technologies</h2>
+        <div class="skill-tags">
+            {% for skill in skills.tools %}
+            <div class="skill-tag">{{ skill }}</div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="skills-category">
+        <h2>Languages</h2>
+        <div class="language-skills">
+            {% for language in skills.languages %}
+            <div class="language-skill">
+                <span class="language-name">{{ language }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% if skills.soft_skills %}
+    <div class="skills-category">
+        <h2>Soft Skills</h2>
+        <div class="skill-tags">
+            {% for skill in skills.soft_skills %}
+            <div class="skill-tag">{{ skill }}</div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</section>
+
+<div class="section-navigation">
+    <a href="{{ url_for('education') }}" class="nav-button"><i class="fas fa-arrow-left"></i> Education</a>
+    <a href="{{ url_for('projects') }}" class="nav-button">Projects <i class="fas fa-arrow-right"></i></a>
+</div>
+{% endblock %}

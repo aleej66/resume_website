@@ -1,0 +1,124 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}{% if is_add %}Add Project{% else %}Edit Project{% endif %}{% endblock %}
+
+{% block header %}{% if is_add %}Add Project{% else %}Edit Project{% endif %}{% endblock %}
+
+{% block content %}
+<div class="edit-project">
+    <form method="POST" class="admin-form">
+        {{ form.csrf_token }}
+        {{ form.id }}
+        
+        <div class="form-group">
+            {{ form.name.label }}
+            {{ form.name(class="form-control") }}
+            {% if form.name.errors %}
+                <div class="form-errors">
+                    {% for error in form.name.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            {{ form.description.label }}
+            {{ form.description(class="form-control") }}
+            {% if form.description.errors %}
+                <div class="form-errors">
+                    {% for error in form.description.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            {{ form.link.label }}
+            {{ form.link(class="form-control") }}
+            <small class="form-text text-muted">Optional. URL to the project (e.g., GitHub repository)</small>
+            {% if form.link.errors %}
+                <div class="form-errors">
+                    {% for error in form.link.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        
+        <h3>Technologies</h3>
+        <div id="technologies-container" data-prototype="
+            <div class='nested-form'>
+                <div class='form-group'>
+                    <label for='technologies-__name__-name'>Technology</label>
+                    <input type='text' id='technologies-__name__-name' name='technologies-__name__-name' class='form-control' required>
+                </div>
+                <button type='button' class='btn btn-danger remove-item-btn'>Remove Technology</button>
+            </div>
+        ">
+            {% for tech_form in form.technologies %}
+            <div class="nested-form">
+                {{ tech_form.id }}
+                <div class="form-group">
+                    {{ tech_form.name.label }}
+                    {{ tech_form.name(class="form-control") }}
+                    {% if tech_form.name.errors %}
+                        <div class="form-errors">
+                            {% for error in tech_form.name.errors %}
+                                <span class="error">{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                <button type="button" class="btn btn-danger remove-item-btn">Remove Technology</button>
+            </div>
+            {% endfor %}
+        </div>
+        <button type="button" class="btn btn-secondary add-item-btn">Add Technology</button>
+        
+        <div class="form-actions">
+            {{ form.submit(class="btn btn-primary") }}
+            <a href="{{ url_for('list_projects') }}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<style>
+    .edit-project {
+        max-width: 800px;
+    }
+    .form-errors {
+        color: #dc3545;
+        margin-top: 5px;
+        font-size: 0.9em;
+    }
+    .form-actions {
+        margin-top: 20px;
+        display: flex;
+        gap: 10px;
+    }
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+    }
+    h3 {
+        margin-top: 30px;
+        margin-bottom: 15px;
+    }
+    .nested-form {
+        background-color: #f9f9f9;
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 4px;
+    }
+    .add-item-btn {
+        margin-bottom: 30px;
+    }
+    .form-text {
+        display: block;
+        margin-top: 5px;
+        font-size: 0.85em;
+    }
+</style>
+{% endblock %}

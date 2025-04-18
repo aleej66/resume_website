@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+
+{% block title %}Projects - Resume{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <h1>Projects</h1>
+    <p>My portfolio of personal and professional projects</p>
+</section>
+
+<section class="projects-section">
+    {% for project in projects %}
+    <div class="project-item">
+        <div class="project-header">
+            <h2>{{ project.name }}</h2>
+            {% if project.link %}
+            <a href="{{ project.link }}" class="project-link" target="_blank">
+                <i class="fab fa-github"></i> View Project
+            </a>
+            {% endif %}
+        </div>
+        <div class="project-content">
+            <div class="description">
+                <p>{{ project.description }}</p>
+            </div>
+            <div class="technologies">
+                <h4>Technologies Used:</h4>
+                <div class="tech-tags">
+                    {% for tech in project.technologies %}
+                    <span class="tech-tag">{{ tech }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            {% if project.features %}
+            <div class="features">
+                <h4>Key Features:</h4>
+                <ul>
+                    {% for feature in project.features %}
+                    <li>{{ feature }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+            {% if project.image %}
+            <div class="project-image">
+                <img src="{{ url_for('static', filename='images/projects/' + project.image) }}" alt="{{ project.name }}">
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</section>
+
+<div class="section-navigation">
+    <a href="{{ url_for('skills') }}" class="nav-button"><i class="fas fa-arrow-left"></i> Skills</a>
+    <a href="{{ url_for('index') }}" class="nav-button">Back to Resume <i class="fas fa-arrow-right"></i></a>
+</div>
+{% endblock %}
